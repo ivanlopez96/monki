@@ -184,19 +184,39 @@
 
   <button id="musicToggle">🎵</button>
 
-  <!-- Emojis flotantes -->
-  <script>
-    const emojis = ["🐒","🙈","🙉","🙊","🐵","🦧","🍌","🌴"];
-    for (let i = 0; i < 40; i++) {
-      const e = document.createElement("div");
-      e.className = "emoji";
-      e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      e.style.left = Math.random() * 100 + "vw";
-      e.style.top = Math.random() * 100 + "vh";
-      e.style.animationDuration = (15 + Math.random() * 20) + "s";
-      document.body.appendChild(e);
-    }
-  </script>
+<!-- Contenedor de emojis flotantes -->
+<div id="emojiContainer"></div>
+
+<script>
+  const emojis = ["🐒","🙈","🙉","🙊","🐵","🦧","🍌","🌴"];
+  const container = document.getElementById('emojiContainer');
+  container.style.position = 'fixed';
+  container.style.top = 0;
+  container.style.left = 0;
+  container.style.width = '100vw';
+  container.style.height = '100vh';
+  container.style.pointerEvents = 'none';
+  container.style.overflow = 'hidden';
+  container.style.zIndex = 1;
+
+  for (let i = 0; i < 40; i++) {
+    const e = document.createElement("div");
+    e.className = "emoji";
+    e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+    // Posición aleatoria en todo el contenedor
+    e.style.left = Math.random() * 100 + "vw";
+    e.style.top = Math.random() * 100 + "vh";
+
+    // Animación constante
+    e.style.animationDuration = (15 + Math.random() * 20) + "s";
+    e.style.animationTimingFunction = "linear";
+    e.style.animationIterationCount = "infinite";
+
+    container.appendChild(e);
+  }
+</script>
+
 
   <!-- Música de fondo -->
   <audio id="jungleAudio" loop>
