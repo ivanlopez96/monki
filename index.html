@@ -15,16 +15,16 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      overflow: hidden;
+      overflow-y: auto; /* Permite scroll vertical */
       position: relative;
     }
 
     h1 {
       font-size: 7vw;
       line-height: 1.2em;
-      margin: 0 20px 60px 20px;
+      margin: 20px;
+      margin-bottom: 60px;
       text-shadow: 2px 2px 8px #000;
       z-index: 2;
       text-align: center;
@@ -64,6 +64,7 @@
       gap: 70px;
       z-index: 2;
       width: 100%;
+      padding-bottom: 50px; /* espacio extra para scroll */
     }
 
     button {
@@ -91,12 +92,12 @@
     }
 
     button div {
-      font-size: 2.8em; /* emoji grande */
+      font-size: 2.8em;
       margin-bottom: 12px;
     }
 
     button strong {
-      font-size: 1.8em; /* texto grande y legible */
+      font-size: 1.8em;
     }
 
     button:hover {
@@ -197,10 +198,8 @@
 
   <button id="musicToggle">🎵</button>
 
-  <!-- Contenedor de emojis flotantes -->
   <div id="emojiContainer"></div>
 
-  <!-- Música de fondo -->
   <audio id="jungleAudio" loop>
     <source src="selva.mp3" type="audio/mpeg">
     Tu navegador no soporta el elemento audio.
@@ -215,11 +214,9 @@
       const e = document.createElement("div");
       e.className = "emoji";
       e.textContent = emojisList[Math.floor(Math.random() * emojisList.length)];
-
       e.style.left = Math.random() * 100 + "vw";
       e.style.top = Math.random() * 100 + "vh";
       e.style.animationDuration = (15 + Math.random() * 20) + "s";
-
       container.appendChild(e);
     }
 
@@ -240,7 +237,7 @@
       musicOn = !musicOn;
     });
 
-    // Función de botón con voz y confeti
+    // Botones con voz y confeti
     function speak(text, btn) {
       speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
