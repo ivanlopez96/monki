@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Control de Misión</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #111;
+      color: #fff;
+    }
+    button {
+      font-size: 20px;
+      padding: 15px 30px;
+      margin: 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #nextPlan {
+      background-color: #28a745;
+      color: white;
+    }
+    #abortMission {
+      background-color: #dc3545;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Centro de Comando</h1>
+  <button id="nextPlan">Pasemos al siguiente plan</button>
+  <button id="abortMission">Abortar misión</button>
+
+  <script>
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'es-ES';
+      speechSynthesis.speak(utterance);
+    }
+
+    document.getElementById('nextPlan').addEventListener('click', () => {
+      speak('Pasemos al siguiente plan');
+    });
+
+    document.getElementById('abortMission').addEventListener('click', () => {
+      speak('Abortar misión');
+    });
+  </script>
+</body>
+</html>
