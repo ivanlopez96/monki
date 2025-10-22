@@ -2,74 +2,91 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Monki</title>
-  <link rel="icon" href="https://emoji.gg/assets/emoji/monkey.png" type="image/png">
+  <title>Juli's Birthday Plan Control</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎉</text></svg>">
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       background-color: #2ecc71;
-      background-image: url('https://source.unsplash.com/1600x900/?monkey'), 
-                        url('https://source.unsplash.com/1600x900/?chimpanzee'), 
-                        url('https://source.unsplash.com/1600x900/?baboon');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      font-family: sans-serif;
+      font-family: "Trebuchet MS", sans-serif;
       color: white;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       min-height: 100vh;
-      backdrop-filter: brightness(0.7);
+      overflow: hidden;
+      position: relative;
     }
 
     h1 {
       font-size: 3em;
+      margin-top: 60px;
       margin-bottom: 40px;
-      text-shadow: 2px 2px 5px #000;
+      text-shadow: 2px 2px 8px #000;
+      animation: fadeIn 1s ease-out;
+      z-index: 2;
+      position: relative;
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 3.5em;
+      opacity: 0.45;
+      animation: float 25s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-100vh) rotate(180deg); }
+      100% { transform: translateY(0) rotate(360deg); }
     }
 
     .button-container {
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 30px;
-      width: 90%;
-      max-width: 500px;
+      animation: zoomIn 1.5s ease-out;
+      z-index: 2;
+      position: relative;
     }
 
     button {
       border: none;
       border-radius: 50%;
-      padding: 40px;
-      font-size: 1.2em;
+      width: 220px;
+      height: 220px;
+      font-size: 1.4em;
       font-weight: bold;
       color: white;
-      box-shadow: 0 8px 0 rgba(0,0,0,0.3);
-      transition: all 0.2s ease;
-      width: 100%;
-      aspect-ratio: 1 / 1;
+      box-shadow: 0 10px 0 rgba(0,0,0,0.4);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      cursor: pointer;
+      user-select: none;
+      flex-direction: column;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      filter: brightness(1.3);
+      transform: scale(1.05);
+      box-shadow: 0 12px 0 rgba(0,0,0,0.5);
     }
 
     button:active {
-      transform: translateY(4px);
-      box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+      transform: translateY(5px);
+      box-shadow: 0 5px 0 rgba(0,0,0,0.4);
     }
 
-    #btn1 {
-      background-color: #27ae60;
-    }
-
-    #btn2 {
-      background-color: #f1c40f;
-    }
-
-    #btn3 {
-      background-color: #e74c3c;
-    }
+    #btn1 { background-color: #27ae60; }
+    #btn2 { background-color: #f39c12; }
+    #btn3 { background-color: #e74c3c; }
 
     @media (min-width: 600px) {
       .button-container {
@@ -77,34 +94,112 @@
         justify-content: center;
       }
     }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Botón de música pequeño, emoji grande */
+    #musicToggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(0,0,0,0.5);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em; /* Emoji grande dentro */
+      transition: background-color 0.3s, transform 0.2s;
+      color: white;
+    }
+
+    #musicToggle:hover {
+      background-color: rgba(0,0,0,0.8);
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
-  <h1>Monki's plan control</h1>
+  <h1>Juli's Birthday Plan Control</h1>
+
   <div class="button-container">
-    <button id="btn1">🚶 Quiero pasar al siguiente plan</button>
-    <button id="btn2">💣 Quiero ir al plan final</button>
-    <button id="btn3">🙅 Quiero irme a casa</button>
+    <button id="btn1"><div>➡️</div><strong>Pasar al siguiente plan</strong></button>
+    <button id="btn2"><div>🏁</div><strong>Ir al plan final</strong></button>
+    <button id="btn3"><div>🏡</div><strong>Irme a casa</strong></button>
   </div>
 
+  <button id="musicToggle">🎵</button>
+
+  <!-- Emojis flotantes -->
   <script>
+    const emojis = ["🐒","🙈","🙉","🙊","🐵","🦧","🍌","🌴"];
+    for (let i = 0; i < 40; i++) {
+      const e = document.createElement("div");
+      e.className = "emoji";
+      e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      e.style.left = Math.random() * 100 + "vw";
+      e.style.top = Math.random() * 100 + "vh";
+      e.style.animationDuration = (15 + Math.random() * 20) + "s";
+      document.body.appendChild(e);
+    }
+  </script>
+
+  <!-- Música de fondo local -->
+  <audio id="jungleAudio" loop>
+    <source src="selva.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento audio.
+  </audio>
+
+  <script>
+    const jungleAudio = document.getElementById('jungleAudio');
+    const musicToggle = document.getElementById('musicToggle');
+
+    // Volumen suave
+    jungleAudio.volume = 0.2;
+
+    let musicOn = false;
+
+    musicToggle.addEventListener('click', () => {
+      if (!musicOn) {
+        jungleAudio.play();
+        musicToggle.textContent = "🔇";
+      } else {
+        jungleAudio.pause();
+        musicToggle.textContent = "🎵";
+      }
+      musicOn = !musicOn;
+    });
+
+    // Voz de los botones
     function speak(text) {
+      speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'es-ES';
+      utterance.volume = 1;
       speechSynthesis.speak(utterance);
     }
 
-    document.getElementById('btn1').addEventListener('click', () => {
-      speak('Quiero pasar al siguiente plan');
-    });
+    function setupButton(id, phrase) {
+      const btn = document.getElementById(id);
+      btn.addEventListener('click', () => speak(phrase));
+      btn.addEventListener('touchend', () => speak(phrase));
+    }
 
-    document.getElementById('btn2').addEventListener('click', () => {
-      speak('Quiero ir al plan final');
-    });
-
-    document.getElementById('btn3').addEventListener('click', () => {
-      speak('Quiero irme a casa');
-    });
+    setupButton('btn1', 'Quiero pasar al siguiente plan');
+    setupButton('btn2', 'Quiero ir al plan final');
+    setupButton('btn3', 'Quiero irme a casa');
   </script>
 </body>
 </html>
