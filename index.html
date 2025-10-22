@@ -13,11 +13,11 @@
       color: white;
       text-align: center;
       min-height: 100vh;
-      overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
       position: relative;
     }
 
@@ -30,18 +30,31 @@
       text-align: center;
     }
 
+    /* Contenedor de emojis */
+    #emojiContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
     .emoji {
       position: absolute;
       font-size: 3.5em;
       opacity: 0.45;
-      animation: float 25s linear infinite;
-      pointer-events: none;
+      animation-name: float;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
     }
 
     @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
+      0% { transform: translateY(100vh) rotate(0deg); }
       50% { transform: translateY(-100vh) rotate(180deg); }
-      100% { transform: translateY(0) rotate(360deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
     }
 
     .button-container {
@@ -184,39 +197,8 @@
 
   <button id="musicToggle">🎵</button>
 
-<!-- Contenedor de emojis flotantes -->
-<div id="emojiContainer"></div>
-
-<script>
-  const emojis = ["🐒","🙈","🙉","🙊","🐵","🦧","🍌","🌴"];
-  const container = document.getElementById('emojiContainer');
-  container.style.position = 'fixed';
-  container.style.top = 0;
-  container.style.left = 0;
-  container.style.width = '100vw';
-  container.style.height = '100vh';
-  container.style.pointerEvents = 'none';
-  container.style.overflow = 'hidden';
-  container.style.zIndex = 1;
-
-  for (let i = 0; i < 40; i++) {
-    const e = document.createElement("div");
-    e.className = "emoji";
-    e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-
-    // Posición aleatoria en todo el contenedor
-    e.style.left = Math.random() * 100 + "vw";
-    e.style.top = Math.random() * 100 + "vh";
-
-    // Animación constante
-    e.style.animationDuration = (15 + Math.random() * 20) + "s";
-    e.style.animationTimingFunction = "linear";
-    e.style.animationIterationCount = "infinite";
-
-    container.appendChild(e);
-  }
-</script>
-
+  <!-- Contenedor de emojis flotantes -->
+  <div id="emojiContainer"></div>
 
   <!-- Música de fondo -->
   <audio id="jungleAudio" loop>
@@ -225,9 +207,26 @@
   </audio>
 
   <script>
+    // Emojis flotantes
+    const emojisList = ["🐒","🙈","🙉","🙊","🐵","🦧","🍌","🌴"];
+    const container = document.getElementById('emojiContainer');
+
+    for (let i = 0; i < 40; i++) {
+      const e = document.createElement("div");
+      e.className = "emoji";
+      e.textContent = emojisList[Math.floor(Math.random() * emojisList.length)];
+
+      e.style.left = Math.random() * 100 + "vw";
+      e.style.top = Math.random() * 100 + "vh";
+      e.style.animationDuration = (15 + Math.random() * 20) + "s";
+
+      container.appendChild(e);
+    }
+
+    // Música
     const jungleAudio = document.getElementById('jungleAudio');
     const musicToggle = document.getElementById('musicToggle');
-    jungleAudio.volume = 0.2;  // música suave por defecto
+    jungleAudio.volume = 0.2;
     let musicOn = false;
 
     musicToggle.addEventListener('click', () => {
@@ -241,6 +240,7 @@
       musicOn = !musicOn;
     });
 
+    // Función de botón con voz y confeti
     function speak(text, btn) {
       speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
@@ -248,7 +248,6 @@
       utterance.volume = 1;
       speechSynthesis.speak(utterance);
 
-      // Fiesta total: confeti y salto del botón
       spawnConfetti();
       btn.style.transform = "translateY(-20px) scale(1.1)";
       setTimeout(() => btn.style.transform = "", 300);
@@ -257,7 +256,6 @@
     function setupButton(id, phrase) {
       const btn = document.getElementById(id);
       btn.addEventListener('click', () => speak(phrase, btn));
-      btn.addEventListener('touchend', () => speak(phrase, btn));
     }
 
     setupButton('btn1', 'Quiero pasar al siguiente plan');
